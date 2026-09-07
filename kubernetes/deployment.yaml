@@ -22,6 +22,14 @@ spec:
           image: nginx:latest
           ports:
             - containerPort: 80
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"
   
           env:
           - name: ENVIRONMENT
@@ -35,3 +43,23 @@ spec:
               configMapKeyRef:
                 name: nginx-config
                 key: log_level
+          
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: database_password
+  
+          readinessProbe:
+            httpGet:
+              path: 
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
