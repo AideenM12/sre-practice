@@ -18,6 +18,9 @@ jobs:
 
       - name: Say hello
         run: echo "CI pipeline is running successfully"
+      
+      - name: Deliberate failure
+        run: exit 1
 
       - name: Check Python
         run: python3 --version
