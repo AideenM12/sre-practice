@@ -45,3 +45,23 @@ jobs:
 
       - name: Deploy application
         run: echo "Deploy completed"
+
+  config-check:
+    runs-on: ubuntu-latest
+
+    env:
+      APP_ENV: staging
+      DEMO_TOKEN: ${{ secrets.DEMO_TOKEN }}
+
+    steps:
+      - name: Show normal environment variable
+        run: echo "Environment is $APP_ENV"
+
+      - name: Check secret exists
+        run: |
+          if [ -n "$DEMO_TOKEN" ]; then
+            echo "Secret is available"
+          else
+            echo "Secret is missing"
+            exit 1
+          fi
