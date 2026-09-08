@@ -22,12 +22,26 @@ jobs:
 
     steps:
       - name: Build application
-        run: echo "Build completed"
+        run: echo "This is the built application" > app.txt
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-build
+          path: app.txt
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: application-build
+
+      - name: Show artifact
+        run: cat app.txt
+
       - name: Deploy application
         run: echo "Deploy completed"
